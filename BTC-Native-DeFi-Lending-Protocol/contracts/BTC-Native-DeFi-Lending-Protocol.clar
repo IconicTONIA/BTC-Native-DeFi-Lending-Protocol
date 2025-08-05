@@ -508,3 +508,49 @@
     (ok order-id)
   )
 )
+
+(define-map daily-protocol-stats
+  { date: uint }
+  {
+    total-value-locked: uint,
+    total-borrowed: uint,
+    daily-volume: uint,
+    active-users: uint,
+    liquidations-count: uint
+  }
+)
+
+(define-map user-activity-stats
+  { user: principal }
+  {
+    total-supplied: uint,
+    total-borrowed: uint,
+    liquidations-experienced: uint,
+    last-activity-block: uint,
+    rewards-earned: uint
+  }
+)
+
+(define-public (update-daily-stats 
+    (date uint) 
+    (tvl uint) 
+    (total-borrowed uint) 
+    (volume uint) 
+    (users uint) 
+    (liquidations uint)
+  )
+  (begin
+    (try! (check-owner))
+    (map-set daily-protocol-stats
+      { date: date }
+      {
+        total-value-locked: tvl,
+        total-borrowed: total-borrowed,
+        daily-volume: volume,
+        active-users: users,
+        liquidations-count: liquidations
+      }
+    )
+    (ok true)
+  )
+)
