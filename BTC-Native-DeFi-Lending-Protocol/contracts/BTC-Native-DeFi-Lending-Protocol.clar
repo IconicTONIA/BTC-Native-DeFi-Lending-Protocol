@@ -153,3 +153,32 @@
     (ok true)
   )
 )
+
+;; Update protocol parameters
+(define-public (update-protocol-parameters
+    (new-liquidation-threshold (optional uint))
+    (new-liquidation-incentive (optional uint))
+    (new-protocol-fee (optional uint))
+  )
+  (begin
+    (try! (check-owner))
+    
+    ;; Update each parameter if provided
+    (if (is-some new-liquidation-threshold)
+      (var-set liquidation-threshold (unwrap-panic new-liquidation-threshold))
+      true
+    )
+    
+    (if (is-some new-liquidation-incentive)
+      (var-set liquidation-incentive (unwrap-panic new-liquidation-incentive))
+      true
+    )
+    
+    (if (is-some new-protocol-fee)
+      (var-set protocol-fee (unwrap-panic new-protocol-fee))
+      true
+    )
+    
+    (ok true)
+  )
+)
